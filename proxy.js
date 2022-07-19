@@ -19,25 +19,22 @@ app.all('*', function (req, res, next) {
         // CORS Preflight
         res.send();
     } else {
-        var targetURL = req.header('Target-URL'); // Target-URL ie. https://example.com or http://example.com
+        var targetURL = req.header('Target-URL'); 
         if (!targetURL) {
             console.log(req.url);
-            targetURL = 'http://test.ayush.com:3000'
+            targetURL = '' //enter name of URL
             console.log('TARGET: ', targetURL, targetURL+req.url)
-            //res.send(500, { error: 'There is no Target-Endpoint header in the request' });
-            //return;
         }
         request({ url: targetURL + req.url, method: req.method, json: req.body, headers: {'Authorization': req.header('Authorization')} },
             function (error, response, body) {
                 if (error) {
                     console.error('error: ' + response.statusCode)
                 }
-//                console.log(body);
             }).pipe(res);
     }
 });
 
-app.set('port', process.env.PORT || 1000);
+app.set('port', process.env.PORT || 1000); //can go through any port,except the ones being used
 
 app.listen(app.get('port'), function () {
     console.log('Proxy server listening on port ' + app.get('port'));
